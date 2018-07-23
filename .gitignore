@@ -10,4 +10,5 @@ output/
 .idea/*
 cfg/dev.test.cfg
 cfg/strategy.test.json
+cfg/
 falcon-log-agent.tar.gz

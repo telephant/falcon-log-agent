@@ -20,8 +20,8 @@ type TreeResponse struct {
 func Update() error {
 	markTms := time.Now().Unix()
 	dlog.Infof("[%d]Update Strategy start", markTms)
-	strategys, err := getFileStrategy()
-	parsePattern(strategys)
+	strategys, err := getFileStrategy() //拿strategy配置文件的内容
+	parsePattern(strategys)             //匹配项
 	updateRegs(strategys)
 	//updateOOMPath(strategys)
 	if err != nil {

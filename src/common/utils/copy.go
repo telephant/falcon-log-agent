@@ -4,16 +4,17 @@ import "common/scheme"
 
 func DeepCopyStrategy(ori *scheme.Strategy) *scheme.Strategy {
 	ret := &scheme.Strategy{
-		ID:              ori.ID,
-		Name:            ori.Name,
-		FilePath:        ori.FilePath,
-		TimeFormat:      ori.TimeFormat,
-		Pattern:         ori.Pattern,
-		Interval:        ori.Interval,
-		Tags:            DeepCopyStringMap(ori.Tags),
-		Func:            ori.Func,
-		Degree:          ori.Degree,
-		Comment:         ori.Comment,
+		ID:         ori.ID,
+		Name:       ori.Name,
+		FilePath:   ori.FilePath,
+		TimeFormat: ori.TimeFormat,
+		Pattern:    ori.Pattern,
+		Interval:   ori.Interval,
+		Tags:       DeepCopyStringMap(ori.Tags),
+		Func:       ori.Func,
+		Degree:     ori.Degree,
+		Comment:    ori.Comment,
+		BeforePush: ori.BeforePush,
 	}
 	return ret
 }

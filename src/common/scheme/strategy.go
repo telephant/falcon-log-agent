@@ -13,6 +13,7 @@ Tags		- Tags
 Func		- 采集方式（max/min/avg/cnt）
 Degree		- 精度位数
 Comment		- 备注
+BeforePush  - 推数据之前的数据自定义处理
 */
 
 type Strategy struct {
@@ -27,6 +28,7 @@ type Strategy struct {
 	Func       string                    `json:"func"`
 	Degree     int64                     `json:"degree"`
 	Comment    string                    `json:"comment"`
+	BeforePush string                    `json:"before_push"`
 	TimeReg    *regexp.Regexp            `json:"-"`
 	PatternReg *regexp.Regexp            `json:"-"`
 	ExcludeReg *regexp.Regexp            `json:"-"`
@@ -51,6 +53,7 @@ func DeepCopyStrategy(p *Strategy) *Strategy {
 	s.Func = p.Func
 	s.Degree = p.Degree
 	s.Comment = p.Comment
+	s.BeforePush = p.BeforePush
 
 	return &s
 }

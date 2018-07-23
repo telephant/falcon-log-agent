@@ -101,7 +101,8 @@ func PusherLoop() {
 				if tmsNeedPush(tms, filePath, step) {
 					pointsCount, err := stCount.GetByTms(tms)
 					if err == nil {
-						ToPushQueue(stCount.Strategy, tms, pointsCount.TagstringMap)
+						pointMap := BeforePushQueue(stCount.Strategy, pointsCount.TagstringMap)
+						ToPushQueue(stCount.Strategy, tms, pointMap)
 					} else {
 						dlog.Errorf("get by tms [%d] error : %v", tms, err)
 					}
@@ -122,6 +123,40 @@ func tmsNeedPush(tms int64, filePath string, step int64) bool {
 		return true
 	}
 	return false
+}
+
+//推数据之前
+func BeforePushQueue(strategy *scheme.Strategy, pointMap map[string]*PointCounter) map[string]*PointCounter {
+	beforePush := strategy.BeforePush
+	if beforePush == "" {
+		return pointMap
+	}
+
+	//配置了数据处理，则进行数据处理
+	var ret map[string]*PointCounter
+	switch strategy.BeforePush {
+	case "max_count":
+		ret = GetMaxCountPoint(pointMap)
+	default:
+		ret = pointMap
+	}
+
+	return ret
+}
+
+func GetMaxCountPoint(pointMap map[string]*PointCounter) map[string]*PointCounter {
+	var ret map[string]*PointCounter
+	var tmpPointCount int64 = 0
+
+	for _, point := range pointMap {
+		if point.Count > tmpPointCount {
+			ret = make(map[string]*PointCounter, 0)
+			ret["null"] = point //set tag key
+			tmpPointCount = point.Count
+		}
+	}
+
+	return ret
 }
 
 // 这个参数是为了最大限度的对接
